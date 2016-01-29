@@ -1,7 +1,8 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
-int numLines(char*);
+# define MAX 128
+int numLinesfn(char*);
 int main(int argc ,char *argv[])
 {
 	//Argument Check -starts
@@ -9,20 +10,33 @@ int main(int argc ,char *argv[])
 	else{fprintf(stderr,"Error: Bad command line parameters");exit(1);}
 	//Argument Check -ends
 	
-	char filename[300];	strcpy(filename,argv[2]);
-	FILE *f1;	f1=fopen(filename,"r");
+	//file handling
+	char filename[300];	
+	strcpy(filename,argv[2]);
+	FILE *f1;	
+	f1=fopen(filename,"r");
 	if(fileno(f1)<=0){fprintf(stderr,"Error: Cannot open file %s",filename);exit(1);}
-	printf("%d\n",fileno(f1)); 										
-	char temp[128];
-	while(fgets(temp,128,f1)!=NULL)
+	printf("%d\n",fileno(f1)); 				
+	
+	//reading file into lines array and word array						
+	char temp[MAX],wordTemp[MAX];
+	int numLines;
+	numLines=numLinesfn(filename);
+	char lines[numLines][MAX];
+	int i=0;
+	while(fgets(temp,MAX,f1)!=NULL)
 	{
-		printf("%s",temp);
+
+		strcpy(&lines[i][0],temp);
+		printf("%s",&lines[i][0]);
+		i++;
 	}
-	printf("num of lines in file =%d word to be used =%d",numLines(filename),abs(atoi(argv[1])));
+
+	printf("num of lines in file =%d word to be used =%d",numLines,abs(atoi(argv[1])));
 	return 0;
 } 	
 
-int numLines(char *filename)
+int numLinesfn(char *filename)
 {
 	FILE *f1;char c;
 	int numOfLines=0;
