@@ -3,8 +3,11 @@
 #include<stdlib.h>
 # define MAX 128
 int numLinesfn(char*);
+void getWord(char* ,char*,int);
 int main(int argc ,char *argv[])
 {
+	//tasks remaining - malloc
+
 	//Argument Check -starts
 	if(argv[1][0]=='-'&&argc==3){printf("Correct\n");}	
 	else{fprintf(stderr,"Error: Bad command line parameters");exit(1);}
@@ -23,11 +26,13 @@ int main(int argc ,char *argv[])
 	int numLines;
 	numLines=numLinesfn(filename);
 	char lines[numLines][MAX];
+	char wordss[numLines][MAX];
 	int i=0;
 	while(fgets(temp,MAX,f1)!=NULL)
 	{
 
 		strcpy(&lines[i][0],temp);
+		getWord(&line[i][0],wordTemp,wordIndex);
 		printf("%s",&lines[i][0]);
 		i++;
 	}
@@ -35,6 +40,24 @@ int main(int argc ,char *argv[])
 	printf("num of lines in file =%d word to be used =%d",numLines,abs(atoi(argv[1])));
 	return 0;
 } 	
+
+void getWord(char *line,char *word,int wordIndex)
+{
+	int i,j,blanks=0;
+	int blankBegin,blackEnd;
+	blankBegin=-1;blankEnd=-1;
+	for(i=0;i<MAX;i++)
+	{
+		if(line[i]==' ')
+		{
+			if(blankBegin==blackEnd){blankBegin=i;blankEnd=i;}
+			else{blankEnd++;}
+		}
+		else
+		{blankBegin=-1;blankEnd=-1;}
+	}
+	
+}
 
 int numLinesfn(char *filename)
 {
