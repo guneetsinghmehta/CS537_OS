@@ -7,37 +7,32 @@ void getWord(char* ,char*,int);
 int main(int argc ,char *argv[])
 {
 	//tasks remaining - malloc
-
+	
 	//Argument Check -starts
-	if(argv[1][0]=='-'&&argc==3){printf("Correct\n");}	
-	else{fprintf(stderr,"Error: Bad command line parameters");exit(1);}
-	//Argument Check -ends
-	
-	//file handling
-	char filename[300];	
-	strcpy(filename,argv[2]);
-	FILE *f1;	
-	f1=fopen(filename,"r");
-	if(fileno(f1)<=0){fprintf(stderr,"Error: Cannot open file %s",filename);exit(1);}
-	printf("%d\n",fileno(f1)); 				
-	
-	//reading file into lines array and word array						
-	char temp[MAX],wordTemp[MAX];
-	int numLines;
-	numLines=numLinesfn(filename);
-	char lines[numLines][MAX];
-	char wordss[numLines][MAX];
-	int i=0;
-	while(fgets(temp,MAX,f1)!=NULL)
+	char filename[300], *c;
+	int wordIndex;
+	int i,j,k,temp;
+
+	if(argc==2){strcpy(filename,argv[1]);wordIndex=1;}
+	else if(argc==3&&argv[1][0]=='-'&&strtol(&argv[1][1],c,0)>0)
 	{
-
-		strcpy(&lines[i][0],temp);
-		//getWord(&line[i][0],wordTemp,wordIndex);
-		printf("%s",&lines[i][0]);
-		i++;
+		strcpy(filename,argv[2]);
+		wordIndex=strtol(&argv[1][1],c,0);
+		printf("normal 3");
 	}
-
-	printf("num of lines in file =%d word to be used =%d",numLines,abs(atoi(argv[1])));
+	else if(argc==3&&argv[1][0]=='-'&&strtol(&argv[1][1],c,0)==0)
+	{
+		strcpy(filename,argv[2]);wordIndex=strtol(&argv[1][1],c,0);
+		wordIndex=1;
+		printf("abnormal 3");
+	}
+	else 
+	{
+		fprintf(stderr,"Error: Bad command line parameters");exit(1);
+	} 
+	printf("wordIndex=%d and filename=%s",wordIndex,filename);
+	FILE *f1;
+	
 	return 0;
 } 	
 
