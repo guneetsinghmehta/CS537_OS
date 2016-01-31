@@ -23,7 +23,7 @@ int main(int argc ,char *argv[])
 	{
 		strcpy(filename,argv[2]);
 		wordIndex=abs(atoi(argv[1]));
-		printf("normal 3");
+		//printf("normal 3");
 	}
 
 	else 
@@ -37,8 +37,13 @@ int main(int argc ,char *argv[])
 	FILE *f1;
 	f1=fopen(filename,"r");
 	if(fileno(f1)<=0){fprintf(stderr,"Error: Cannot open file %s",filename);exit(1);}
-	printf("\n");	i=0;
-	while(fgets(temp,MAX,f1)!=NULL)	{	printf("%s",temp);	i++;	}//printing file contents
+	
+	i=0;
+	while(fgets(temp,MAX,f1)!=NULL)	
+	{	
+	//	printf("%s",temp);	
+		i++;
+	}
 	numLines=i;
 	//opening file -ends
 	
@@ -49,7 +54,7 @@ int main(int argc ,char *argv[])
 	words=malloc(numLines*sizeof(char*));
 	rewind(f1);i=0;
 
-	printf("\n");
+	//printf("\n");
 	while(fgets(temp,MAX,f1)!=NULL)
 	{
 		lines[i]=malloc(sizeof(temp));
@@ -61,11 +66,11 @@ int main(int argc ,char *argv[])
 		//printf("%s\n",words[i]);
 		i++;
 	}
-	printf("printing lines\n");
-	for(i=0;i<numLines;i++){printf("%s",lines[i]);}
+	//printf("printing lines\n");
+	//for(i=0;i<numLines;i++){printf("%s",lines[i]);}
 	
-	printf("\nprinting words\n");
-	for(i=0;i<numLines;i++){printf("%s\n",words[i]);}
+	//printf("\nprinting words\n");
+	//for(i=0;i<numLines;i++){printf("%s\n",words[i]);}
 	//allocating space for lines - ends
 	
 	//sorting starts
@@ -76,14 +81,11 @@ int main(int argc ,char *argv[])
 	sortWords(words,indices,numLines);
 	//sorting ends
 	
-	printf("\nfinal results\n");
+	//printf("\nfinal results\n");
 	for(i=0;i<numLines;i++)
 	{
 		printf("%s",lines[indices[i]]);
 	}
-	
-	
-	
 	return 0;
 } 
 
@@ -102,10 +104,10 @@ void sortWords(char **strings,int *order,int number)
 			}	
 		}
 	}
-	printf("printing sorted strings\n");
+	//printf("printing sorted strings\n");
 	for(i=0;i<number;i++)
 	{
-		printf("%s\n",strings[i]);
+		//printf("%s\n",strings[i]);
 	}
 }	
 
