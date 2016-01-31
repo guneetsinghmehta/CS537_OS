@@ -8,6 +8,7 @@
 # define MAX 128
 int numLinesfn(char*);
 void getWord(char* ,char*,int);
+char* findWord(char*,int);
 int main(int argc ,char *argv[])
 {
 	//tasks remaining - malloc
@@ -40,13 +41,55 @@ int main(int argc ,char *argv[])
 	while(fgets(temp,MAX,f1)!=NULL)	{	printf("%s",temp);	i++;	}//printing file contents
 	numLines=i;
 	//opening file -ends
+	
+	//allocating space for lines - starts	
+	char **lines;
+	char **words;
+	lines=malloc(numLines*sizeof(char*));
+	words=malloc(numLines*sizeof(char*));
+	rewind(f1);i=0;
 
+	printf("\n");
+	while(fgets(temp,MAX,f1)!=NULL)
+	{
+		lines[i]=malloc(sizeof(temp));
+		strcpy(lines[i],temp);
+		words[i]=findWord(temp,wordIndex);
+		//printf("%s",lines[i]);
+		printf("%s\n",words[i]);
+		i++;
+	}
+	printf("\n");
+	//allocating space for lines - ends
+	
+	//allocatin
 
 	
 	
 	
 	return 0;
 } 	
+
+char * findWord(char *str,int index)
+{
+   	const char s[2] = " ";
+   	   char *token;
+   	   char *lastToken;
+   token = strtok(str, s);
+   int i=1;
+   while( token != NULL&&i<=index ) 
+   {
+	if(i==index)
+	{
+		//printf("ans=%s\n",token);
+	}
+      //printf( " %s %d\n", token,strlen(token) );
+    lastToken=token;
+      token = strtok(NULL, s);
+      i++;
+   }
+   return(lastToken);
+}
 
 void getWord(char *line,char *word,int wordIndex)
 {
