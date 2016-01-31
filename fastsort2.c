@@ -51,7 +51,11 @@ int main(int argc ,char *argv[])
 	char **lines;
 	char **words;
 	lines=malloc(numLines*sizeof(char*));
+	if(lines==NULL)
+	{fprintf(stderr,"malloc failed");exit(1);}
 	words=malloc(numLines*sizeof(char*));
+	if(words==NULL)
+	{fprintf(stderr,"malloc failed");exit(1);}
 	rewind(f1);i=0;
 
 	//printf("\n");
