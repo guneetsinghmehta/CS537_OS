@@ -7,8 +7,8 @@
 #include <fcntl.h>
 # define MAX 128
 int numLinesfn(char*);
-void getWord(char* ,char*,int);
 char* findWord(char*,int);
+void sortWords (char**,int*,int);
 int main(int argc ,char *argv[])
 {
 	//tasks remaining - malloc
@@ -30,7 +30,7 @@ int main(int argc ,char *argv[])
 	{
 		fprintf(stderr,"Error: Bad command line parameters");exit(1);
 	} 
-	printf("wordIndex=%d and filename=%s",wordIndex,filename);
+	//printf("wordIndex=%d and filename=%s",wordIndex,filename);
 	//Argument Chek -ends
 	
 	//opening file -starts
@@ -54,21 +54,60 @@ int main(int argc ,char *argv[])
 	{
 		lines[i]=malloc(sizeof(temp));
 		strcpy(lines[i],temp);
-		words[i]=findWord(temp,wordIndex);
+		words[i]=malloc(128*sizeof(char));
+		strcpy(words[i],findWord(temp,wordIndex));
+		*temp=NULL;
 		//printf("%s",lines[i]);
-		printf("%s\n",words[i]);
+		//printf("%s\n",words[i]);
 		i++;
 	}
-	printf("\n");
+	printf("printing lines\n");
+	for(i=0;i<numLines;i++){printf("%s",lines[i]);}
+	
+	printf("\nprinting words\n");
+	for(i=0;i<numLines;i++){printf("%s\n",words[i]);}
 	//allocating space for lines - ends
 	
-	//allocatin
-
+	//sorting starts
+	int indices[numLines];
+	for(i=0;i<numLines;i++){indices[i]=i;}
+	
+//	for(i=0;i<numLines;i++){printf("%s\n",words[i]);}
+	sortWords(words,indices,numLines);
+	//sorting ends
+	
+	printf("\nfinal results\n");
+	for(i=0;i<numLines;i++)
+	{
+		printf("%s",lines[indices[i]]);
+	}
 	
 	
 	
 	return 0;
-} 	
+} 
+
+void sortWords(char **strings,int *order,int number)
+{
+	int i,j,temp2;
+	char *temp;
+	for(i=0;i<number;i++)
+	{
+		for(j=i;j<number;j++)
+		{
+			if(strcmp(strings[i],strings[j])>0)
+			{
+				temp=strings[i];strings[i]=strings[j];strings[j]=temp;
+				temp2=order[i];order[i]=order[j];order[j]=temp2;
+			}	
+		}
+	}
+	printf("printing sorted strings\n");
+	for(i=0;i<number;i++)
+	{
+		printf("%s\n",strings[i]);
+	}
+}	
 
 char * findWord(char *str,int index)
 {
@@ -89,24 +128,6 @@ char * findWord(char *str,int index)
       i++;
    }
    return(lastToken);
-}
-
-void getWord(char *line,char *word,int wordIndex)
-{
-	int i,j,blanks=0;
-	int blankBegin,blankEnd;
-	blankBegin=-1;blankEnd=-1;
-	for(i=0;i<MAX;i++)
-	{
-		if(line[i]==' ')
-		{
-			if(blankBegin==blankEnd){blankBegin=i;blankEnd=i;}
-			else{blankEnd++;}
-		}
-		else
-		{blankBegin=-1;blankEnd=-1;}
-	}
-	
 }
 
 int numLinesfn(char *filename)
