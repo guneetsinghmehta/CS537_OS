@@ -27,6 +27,7 @@ summary -
 1 add to usys
 2 syscall.h - define 
 3 syscall.c - new entry for function
+added to sysfunc.h
 4 put your function in getproc.c
 5 kernel - proc.c -  to find the number of processes running use - ptable 
  ptable - process table - 
