@@ -28,7 +28,7 @@ int main(int argc ,char *argv[])
 
 	else 
 	{
-		fprintf(stderr,"Error: Bad command line parameters");exit(1);
+		fprintf(stderr,"Error: Bad command line parameters\n");exit(1);
 	} 
 	//printf("wordIndex=%d and filename=%s",wordIndex,filename);
 	//Argument Chek -ends
