@@ -1,0 +1,48 @@
+Notes
+1. in folder /user - implementation of fuctions
+2. all sv6 programs exit at the end - exit()
+3. to test the function - edit makefile.mk
+
+4 ld - linker = uses different .o files and makes a new one like user/hello.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+
+5 user/usys.S - full of assembly
+a. trap instruction is - int - interrupt = also known as trap
+b. ret - for return
+c. int $T_SYSCALL; - this tells to trap to a system call
+
+6 syscall.h in /include/syscall.h
+add- #define SYS_getprocs 22 - at the end of the 
+
+7 in usys.S - add SYSCALL(getprocs) at end
+
+8 kernel.bootasm.S - system and how it boots
+
+9 kernel.main.c - in function mainc - pinit() - process table
+
+10 kernel/sysproc.c - contains definition of the functions
+
+11 iret - returns from trap - pops the trap out 
+
+summary -
+1 add to usys
+2 syscall.h - define 
+3 syscall.c - new entry for function
+4 put your function in getproc.c
+5 kernel - proc.c -  to find the number of processes running use - ptable 
+ ptable - process table - 
+6 in proc.c - allocproc - loops through the ptable i.e. all processes 
+acquire(&ptable.lock);
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+    if(p->state == UNUSED)
+      goto found;
+  release(&ptable.lock);
+  return 0;
+
+acquire and release the lock   
+
+7 in proc.h - find the status like procstate- 
+
+steps
+1. make a user program
+2. make a system call that does nothing
+3. make a system call that returns the number of sunning processes
