@@ -23,6 +23,8 @@ int main(int argc ,char *argv[])
 	{
 		strcpy(filename,argv[2]);
 		wordIndex=abs(atoi(argv[1]));
+		if(wordIndex==0){fprintf(stderr,"Error: Bad command line parameters\n");exit(1);}
+//		printf("wordIndex=%d",wordIndex);
 		//printf("normal 3");
 	}
 
