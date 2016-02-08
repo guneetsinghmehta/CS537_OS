@@ -140,3 +140,34 @@ int main (int argc , char *argv[])
 	
 	
 ////////MUltiple files////////////////////
+use to simplify the project
+
+gcc -Wall -c main.c   - this makes main.o file
+gcc -Wall -c helper.c	- this makes helper.o file
+gcc -Wall -o main main.o helper.o
+
+
+///////Makefile///////////
+main.o : main.c
+	gcc -Wall -c main.c
+
+helper.o : helper.c
+	gcc -Wall -c helper.c
+
+
+main : helper.o main.o
+	gcc -Wall -o main main.o helper.o
+
+clean :
+	rm *.o main
+	
+# fo make main
+#gcc -Wall -c helper.c
+
+#gcc -Wall -o main main.o helper.o
+
+Static in C is private variable
+Extern - to share variables accross files
+
+//// It is possible of a common file to include other header files/////
+

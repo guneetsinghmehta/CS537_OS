@@ -14,7 +14,7 @@ int main(int argc ,char *argv[])
 	//tasks remaining - malloc
 	
 	//Argument Check -starts
-	char filename[300],temp[MAX];
+	char filename[300],temp[2*MAX];
 	int wordIndex,numLines;
 	int i;
 
@@ -48,12 +48,12 @@ int main(int argc ,char *argv[])
 	}
 	
 	i=0;
-	while(fgets(temp,MAX,f1)!=NULL)	
+	while(fgets(temp,2*MAX,f1)!=NULL)	
 	{	
 	//	printf("%s",temp);	
 		if(strlen(temp)>=128)
 		{
-			fprintf(stderr,"Line too long");exit(1);
+			fprintf(stderr,"Line too long\n");exit(1);
 		}
 		i++;
 	}
