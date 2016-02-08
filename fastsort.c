@@ -23,7 +23,9 @@ int main(int argc ,char *argv[])
 	{
 		strcpy(filename,argv[2]);
 		wordIndex=abs(atoi(argv[1]));
-		if(wordIndex==0){fprintf(stderr,"Error: Bad command line parameters\n");exit(1);}
+		if(wordIndex==0){fprintf(stderr,"Error: Bad command line parameters\n");
+		//printf("Error: Bad command line parameters\n");
+		exit(1);}
 //		printf("wordIndex=%d",wordIndex);
 		//printf("normal 3");
 	}
@@ -38,7 +40,12 @@ int main(int argc ,char *argv[])
 	//opening file -starts
 	FILE *f1;
 	f1=fopen(filename,"r");
-	if(fileno(f1)<=0){fprintf(stderr,"Error: Cannot open file %s",filename);exit(1);}
+	if(f1==NULL||fileno(f1)<=0)
+	{
+	fprintf(stderr,"Error: Cannot open file %s\n",filename);
+	//printf("Error: Cannot open file %s",filename);
+	exit(1);
+	}
 	
 	i=0;
 	while(fgets(temp,MAX,f1)!=NULL)	
