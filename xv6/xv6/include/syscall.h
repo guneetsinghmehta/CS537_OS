@@ -23,6 +23,6 @@
 #define SYS_sbrk   19
 #define SYS_sleep  20
 #define SYS_uptime 21
-#define SYS_getprocs 22
+#define SYS_getprocs 22 //amohanty
 
 #endif // _SYSCALL_H_
