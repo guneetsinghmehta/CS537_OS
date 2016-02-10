@@ -1,2 +1,2 @@
 all:
-	gcc -o  t  practice2.c -Wall -Werror
+	gcc -o  t  whoosh.c -Wall 

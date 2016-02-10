@@ -27,7 +27,7 @@ c. if path = empty then no command can be run. But built in commands should be a
 
 5. DO not support ~ Tilda
 
-6. if ls -la /tmp > output then nothing should be printed to the screen but should be printed to the specified file
+6. if "ls -la /tmp > output" then nothing should be printed to the screen but should be printed to the specified file
 b. if file exists then simply overwrite it
 c. if no file is defined then print error message and do not run the program ls
 d. the following should not work 
