@@ -5,7 +5,7 @@
 #include <sys/wait.h>
 #include<string.h>
 #include <fcntl.h>
-
+#define MAXLINELENGTH 128
 
 void callErrorFn()
 {	
@@ -29,30 +29,42 @@ void parse(char *input , char **command)
 	}
 }
 
-void searchCommand(char *input)
+void searchCommand(char *command,char **path)
 {
 	//searches for commands in the specified paths
+	int i=0;
+	//FILE *f1;
+	char *temp=malloc(2*MAXLINELENGTH);
+	while(path[i]!=NULL)
+	{
+		temp=strcat(path[i],"/");
+		temp=strcat(temp,&command[0]);
+		printf(temp);
+		i++;
+	}
 }
 /*
-	3 split into tokens
 	4 depending on tokens - 
 	a. if in built then call the function
 	b. if cd /exit/pwd /path then call branches in code - make functions in fact
 	
-	1. parse into chars
 	2. search command
 	3. execute command
 */
 
 int main(int argc ,char *argv[])
 {	
-	char input[128];
-	char **command;	command=malloc(128);// will contain ls -la /tmp etc etc ...
-
+	char input[MAXLINELENGTH];
+	char **command;	command=malloc(MAXLINELENGTH);// will contain ls -la /tmp etc etc ...
+	char **path;path=malloc(MAXLINELENGTH);
+	path[0]=strdup("/bin");
+	path[1]=strdup("/usr/bin");
+	
+	//loop starts
 	printf("whoosh> ");
-	fgets(input,128,stdin);
+	fgets(input,MAXLINELENGTH,stdin);
 	parse(input,command);
-		
+	searchCommand(command[0],path);
 	return 0;
 
 }
