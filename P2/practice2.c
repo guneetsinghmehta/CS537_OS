@@ -1,0 +1,40 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include<string.h>
+#include <fcntl.h>
+
+
+int main(int argc ,char *argv[])
+{
+	printf("kipper\n");
+	
+	int rc=fork();	
+	if(rc==0)
+	{
+			char *myargv[4];
+		myargv[0]=strdup("/bin/ls");
+		myargv[1]=strdup("-l");
+		myargv[2]=strdup("-a");
+		myargv[3]=NULL;
+		
+		close(STDOUT_FILENO);
+		open("/tmp/file.stdout",O_CREAT|O_TRUNC| O_WRONLY,S_IRUSR|S_IWUSR);
+		
+		execv(myargv[0],myargv);
+		printf("failed\n");
+		exit(1);
+	}
+	else if(rc>0)
+	{
+		int cpid=(int)wait(NULL);
+		printf("parent : cpid was %d\n",cpid);
+	}
+	else{printf("failure");}
+
+	printf("bye\n");
+	
+	return 0;
+}

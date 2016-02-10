@@ -1,0 +1,17 @@
+main : helper.o main.o
+	gcc -Wall -o main main.o helper.o
+
+main.o : main.c
+	gcc -Wall -c main.c
+
+helper.o : helper.c
+	gcc -Wall -c helper.c
+
+clean :
+	rm *.o main
+	
+# fo make main
+#gcc -Wall -c helper.c
+
+#gcc -Wall -o main main.o helper.o
+

@@ -171,3 +171,7 @@ Extern - to share variables accross files
 
 //// It is possible of a common file to include other header files/////
 
+
+///////////gdb////
+run 
+bt - backtrack
