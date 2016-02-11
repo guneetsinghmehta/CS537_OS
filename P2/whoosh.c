@@ -65,13 +65,56 @@ int searchCommand(char **command,char **path)
 	return 1;
 }
 
+int numCommands(char **command)
+{
+	int ans=0;
+	while(command[ans]!=NULL){ans++;}
+	return ans;
+}
+
+void checkRedirection(char *commandAddress,char **command)
+{	
+	//checks if redirection needs to be done. If yes then returns 0 on success and 1 on fault
+	//returns 0 on success and 1 on failure
+	//incomplete - check for segmentation fault - 
+	/*
+		case 1 - ls >
+		case 2 - ls > out out2 out3
+		case 3 - ls > out
+	*/
+	int i=0,count=numCommands(command);
+	while(command[i]!=NULL)
+	{
+		if(strcmp(command[i],">")==0&&i==count-2)
+		{
+			char *temp;
+			close(STDOUT_FILENO);temp=strdup(command[i+1]);
+			open(strcat(temp,".out"),O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR|S_IWUSR);
+			close(STDERR_FILENO);temp=strdup(command[i+1]);
+			open(strcat(temp,".err"),O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR|S_IWUSR);
+			command[i]=NULL;
+			command[i+1]=NULL;
+			execv(commandAddress,command);
+			callErrorFn();
+			return ;
+		}
+		else if(strcmp(command[i],">")==0&&(i==count-1||i<count-2))
+		{
+			callErrorFn();
+			return ;
+		}
+		i++;
+	}
+	execv(commandAddress,command);
+}
+
 void executeCommand(char **command, char **path)
 {
 	/*
 		Searches for command present in one of the search folders
 		On finding the command in a folder makes a child process and executes the command with 			parameters
 	*/
- 	int i=0;
+ 	int i=0;int j;
 	char *temp=malloc(2*MAXLINELENGTH);
 	while(path[i]!=NULL)
 	{
@@ -80,8 +123,12 @@ void executeCommand(char **command, char **path)
 		//Searches for built in commands in paths
 		if(stat(temp,buf)==0&&strcmp(command[0],"pwd")!=0)//because pwd is new command
 		{
+			checkRedirection(temp,command);
 			int rc=fork();
-			if(rc==0){execv(temp,command);callErrorFn();exit(0);}
+			if(rc==0)
+			{
+				checkRedirection(temp,command);
+			}
 			else if(rc>0){int cpid=(int)wait(NULL);}
 			else {callErrorFn();}	//if fork fails		
 			return;//success
@@ -94,7 +141,7 @@ void executeCommand(char **command, char **path)
 	//incomplete
 		printf("**my implementation**\n");
 		int i=1;
-		path=malloc(MAXLINELENGTH);
+		**path=NULL;
 		while(command[i]!=NULL)
 		{
 			path[i-1]=strdup(command[i]);
@@ -131,7 +178,6 @@ void executeCommand(char **command, char **path)
 	
 
 }
-
 void main(int argc ,char *argv[])
 {	
 	char input[10*MAXLINELENGTH];

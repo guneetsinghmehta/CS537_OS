@@ -1,8 +1,18 @@
 Question 
 1 number of parameter check only for built in commands and not the other commands right ?
+2 for ls > out1 out2 - should there be exit from shell of continue ?
+3 writing the output file in the same folder as the code or in tmp folder ?
 
-1. path
+
 2. redirection
+a. only for shell commands
+b. not for built in commands
+c. outut should be to output.out
+d. error should be to output.err
+e. if files are present then overwrite
+f. if output is not specified - then error and not run the command
+g.
+
 5 exit only in case of incorrect number of arguments
 
 
