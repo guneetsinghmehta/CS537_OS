@@ -9,6 +9,7 @@
 #include <sys/stat.h>
 
 #define MAXLINELENGTH 128
+#define PATH_MAX 128
 
 void callErrorFn()
 {	
@@ -91,7 +92,7 @@ void executeCommand(char **command, char **path)
 		temp=strcat(temp,&command[0][0]);
 		struct stat *buf=malloc(sizeof(struct stat));
 		//Searches for built in commands in paths
-		if(stat(temp,buf)==0)
+		if(stat(temp,buf)==0&&strcmp(command[0],"pwd")!=0)//because pwd is new command
 		{
 			int rc=fork();
 			if(rc==0)
@@ -103,7 +104,7 @@ void executeCommand(char **command, char **path)
 			{
 				int cpid=(int)wait(NULL);
 			}
-			else
+			else 
 			{
 				callErrorFn();	//if fork fails			
 			}
@@ -117,24 +118,51 @@ void executeCommand(char **command, char **path)
 		exit(0);
 		return;
 	}
+	if(strcmp(&command[0][0],"path")==0)
+	{
+		//complete
+		int i=1;
+		path=malloc(MAXLINELENGTH);
+		while(command[i]!=NULL)
+		{
+			path[i-1]=strdup(command[i]);
+			printf("%s\n",path[i-1]);
+			i++;
+		}
+		return;
+	}
+	
+	if(strcmp(&command[0][0],"pwd")==0)
+	{	
+	//Seg fault - incomplete
+		char *cwd;
+		char buff[PATH_MAX+1];
+		cwd=getcwd(buff,PATH_MAX+1);
+		printf("%s\n",cwd);
+		return;
+	}
+	
 	if(strcmp(&command[0][0],"cd")==0)
 	{	
 	// Seg fault - incomplete
-		char *newDir=malloc(MAXLINELENGTH);
-		char *newDir2;
+		char *cwd;
+		char buff[PATH_MAX+1];
+		int ans;//if zero then no error else if -1 then error
 		if(command[1]==NULL)
 		{
-			newDir=strdup(getenv("HOME"));
-			chdir(newDir);
-			printf("%s",newDir);
+			cwd=strdup(getenv("HOME"));
+			ans=chdir(cwd);
+			if(ans==-1){callErrorFn();}
+			//printf("%s",cwd);
 		}
 		else if(command[2]==NULL)
 		{	
-			newDir2=getcwd(newDir,sizeof(newDir));
-			printf("%s\n",newDir2);
-			newDir2=strcat(newDir2,"/");
-			newDir2=strcat(newDir2,&command[1][0]);
-			chdir(newDir2);
+			cwd=getcwd(buff,PATH_MAX+1);
+			cwd=strcat(cwd,"/");
+			cwd=strcat(cwd,command[1]);
+			ans=chdir(cwd);
+			if(ans==-1){callErrorFn();}
+			//printf("%s",cwd);
 		}
 		else
 		{
@@ -142,21 +170,7 @@ void executeCommand(char **command, char **path)
 		}
 		return;
 	}
-	if(strcmp(&command[0][0],"path")==0)
-	{
-		int i=0;
-		return;
-	}
-	if(strcmp(&command[0][0],"pwd")==0)
-	{	
-	//complete
-		char *CurrentDir=malloc(MAXLINELENGTH);
-		char *CurrentDir2;
-//		printf("%s\n",getcwd(CurrentDir,sizeof(CurrentDir)));
-		CurrentDir2=getcwd(CurrentDir,sizeof(CurrentDir));
-		printf("%s\n",CurrentDir2);
-		return;
-	}
+	
 
 }
 
