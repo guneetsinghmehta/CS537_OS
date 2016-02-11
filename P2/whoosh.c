@@ -115,12 +115,14 @@ void executeCommand(char **command, char **path)
 	if(strcmp(&command[0][0],"exit")==0)
 	{
 	//complete
+		printf("**my implementation**\n");
 		exit(0);
 		return;
 	}
 	if(strcmp(&command[0][0],"path")==0)
 	{
-		//complete
+	//incomplete
+			printf("**my implementation**\n");
 		int i=1;
 		path=malloc(MAXLINELENGTH);
 		while(command[i]!=NULL)
@@ -134,7 +136,7 @@ void executeCommand(char **command, char **path)
 	
 	if(strcmp(&command[0][0],"pwd")==0)
 	{	
-	//Seg fault - incomplete
+			printf("**my implementation**\n");
 		char *cwd;
 		char buff[PATH_MAX+1];
 		cwd=getcwd(buff,PATH_MAX+1);
@@ -144,7 +146,7 @@ void executeCommand(char **command, char **path)
 	
 	if(strcmp(&command[0][0],"cd")==0)
 	{	
-	// Seg fault - incomplete
+			printf("**my implementation**\n");
 		char *cwd;
 		char buff[PATH_MAX+1];
 		int ans;//if zero then no error else if -1 then error
@@ -178,7 +180,7 @@ int main(int argc ,char *argv[])
 {	
 	char input[MAXLINELENGTH];
 	char **command;	command=malloc(MAXLINELENGTH);// will contain ls -la /tmp etc etc ...
-	char **path;path=malloc(MAXLINELENGTH);
+	char **path;path=(char**)malloc(MAXLINELENGTH);
 	path[0]=strdup("/bin");
 	
 	//loop starts
