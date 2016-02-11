@@ -18,7 +18,6 @@ void callErrorFn()
 	write(STDERR_FILENO,error_message,strlen(error_message));
 	
 }
-
 void parse(char *input , char **command)
 {
 	/*
@@ -38,10 +37,15 @@ void parse(char *input , char **command)
 	}
 	const char s2[2]="\n";
 	token=strtok(command[i-1],s2);
-	command[i-1]=strdup(token);
-	command[i]=NULL;
+	if(token!=NULL)
+	{
+		command[i-1]=strdup(token);	
+		command[i]=NULL;
+	}
+	else{command[i-1]=NULL;}
 	i=0;
 }
+
 
 int searchCommand(char **command,char **path)
 {
@@ -176,7 +180,7 @@ void executeCommand(char **command, char **path)
 
 int main(int argc ,char *argv[])
 {	
-	char input[2*MAXLINELENGTH];
+	char input[10*MAXLINELENGTH];
 	char **command;	command=malloc(MAXLINELENGTH);// will contain ls -la /tmp etc etc ...
 	char **path;path=(char**)malloc(MAXLINELENGTH);
 	path[0]=strdup("/bin");
