@@ -16,7 +16,7 @@ void callErrorFn()
 	//all functions call this function to display error
 	char error_message[30]="An error has occured\n";
 	write(STDERR_FILENO,error_message,strlen(error_message));
-	exit(1);
+	
 }
 
 void parse(char *input , char **command)
@@ -43,7 +43,7 @@ void parse(char *input , char **command)
 	i=0;
 }
 
-void searchCommand(char **command,char **path)
+int searchCommand(char **command,char **path)
 {
 	//searches for commands in the specified paths
 	/*
@@ -64,16 +64,16 @@ void searchCommand(char **command,char **path)
 
 		if(stat(temp,buf)==0)
 		{
-			return;//success
+			return 0;//success
 		}
 		i++;
 	}
 	//searches for 	exit ,cd ,pwd and path
 	if(strcmp(&command[0][0],"exit")==0||strcmp(&command[0][0],"cd")==0||strcmp(&command[0][0],"pwd")==0||strcmp(&command[0][0],"path")==0)
 	{
-		return;
+		return 0;
 	}
-	callErrorFn();
+	return 1;
 }
 
 void executeCommand(char **command, char **path)
@@ -98,7 +98,8 @@ void executeCommand(char **command, char **path)
 			if(rc==0)
 			{
 				execv(temp,command);
-				callErrorFn();				
+				callErrorFn();	
+				exit(0);			
 			}
 			else if(rc>0)
 			{
@@ -115,7 +116,6 @@ void executeCommand(char **command, char **path)
 	if(strcmp(&command[0][0],"exit")==0)
 	{
 	//complete
-		printf("**my implementation**\n");
 		exit(0);
 		return;
 	}
@@ -124,7 +124,7 @@ void executeCommand(char **command, char **path)
 	//incomplete
 			printf("**my implementation**\n");
 		int i=1;
-		path=calloc(100,MAXLINELENGTH);
+		path=malloc(MAXLINELENGTH);
 		while(command[i]!=NULL)
 		{
 			path[i-1]=strdup(command[i]);
@@ -136,7 +136,6 @@ void executeCommand(char **command, char **path)
 	
 	if(strcmp(&command[0][0],"pwd")==0)
 	{	
-			printf("**my implementation**\n");
 		char *cwd;
 		char buff[PATH_MAX+1];
 		cwd=getcwd(buff,PATH_MAX+1);
@@ -146,7 +145,6 @@ void executeCommand(char **command, char **path)
 	
 	if(strcmp(&command[0][0],"cd")==0)
 	{	
-			printf("**my implementation**\n");
 		char *cwd;
 		char buff[PATH_MAX+1];
 		int ans;//if zero then no error else if -1 then error
@@ -168,7 +166,7 @@ void executeCommand(char **command, char **path)
 		}
 		else
 		{
-			callErrorFn();
+			callErrorFn();exit(1);
 		}
 		return;
 	}
@@ -178,18 +176,21 @@ void executeCommand(char **command, char **path)
 
 int main(int argc ,char *argv[])
 {	
-	char input[MAXLINELENGTH];
+	char input[2*MAXLINELENGTH];
 	char **command;	command=malloc(MAXLINELENGTH);// will contain ls -la /tmp etc etc ...
 	char **path;path=(char**)malloc(MAXLINELENGTH);
 	path[0]=strdup("/bin");
-	
+	int searchReturn=0;//0 if success and 1 if failure
 	//loop starts
 	for(;;)
 	{
 		printf("whoosh> ");
 		fgets(input,MAXLINELENGTH,stdin);
+		if(strlen(input)==1){continue;}
+		if(strlen(input)>128){callErrorFn();continue;}
 		parse(input,command);
-		searchCommand(command,path);
+		searchReturn=searchCommand(command,path);
+		if(searchReturn==1){callErrorFn();continue;}
 		executeCommand(command,path);
 	}
 	return 0;

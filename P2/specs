@@ -3,6 +3,7 @@
 3. continue executing - A command does not exist or cannot be executed.
     A very long command line (over 128 bytes).
 4. empty command line
+5 exit only in case of incorrect number of arguments
 
 Notes P2
 1 when no recognizable commane - print the error
