@@ -111,15 +111,54 @@ void executeCommand(char **command, char **path)
 		}
 		i++;
 	}
+	if(strcmp(&command[0][0],"exit")==0)
+	{
+	//complete
+		exit(0);
+		return;
+	}
+	if(strcmp(&command[0][0],"cd")==0)
+	{	
+	// Seg fault - incomplete
+		char *newDir=malloc(MAXLINELENGTH);
+		char *newDir2;
+		if(command[1]==NULL)
+		{
+			newDir=strdup(getenv("HOME"));
+			chdir(newDir);
+			printf("%s",newDir);
+		}
+		else if(command[2]==NULL)
+		{	
+			newDir2=getcwd(newDir,sizeof(newDir));
+			printf("%s\n",newDir2);
+			newDir2=strcat(newDir2,"/");
+			newDir2=strcat(newDir2,&command[1][0]);
+			chdir(newDir2);
+		}
+		else
+		{
+			callErrorFn();
+		}
+		return;
+	}
+	if(strcmp(&command[0][0],"path")==0)
+	{
+		int i=0;
+		return;
+	}
+	if(strcmp(&command[0][0],"pwd")==0)
+	{	
+	//complete
+		char *CurrentDir=malloc(MAXLINELENGTH);
+		char *CurrentDir2;
+//		printf("%s\n",getcwd(CurrentDir,sizeof(CurrentDir)));
+		CurrentDir2=getcwd(CurrentDir,sizeof(CurrentDir));
+		printf("%s\n",CurrentDir2);
+		return;
+	}
 
 }
-/*
-	4 depending on tokens - 
-	a. if in built then call the function
-	b. if cd /exit/pwd /path then call branches in code - make functions in fact
-	
-	3. execute command
-*/
 
 int main(int argc ,char *argv[])
 {	
@@ -127,7 +166,6 @@ int main(int argc ,char *argv[])
 	char **command;	command=malloc(MAXLINELENGTH);// will contain ls -la /tmp etc etc ...
 	char **path;path=malloc(MAXLINELENGTH);
 	path[0]=strdup("/bin");
-	path[1]=strdup("/usr/bin");
 	
 	//loop starts
 	for(;;)
