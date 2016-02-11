@@ -53,6 +53,7 @@ void searchCommand(char **command,char **path)
 	int i=0;
 	char *temp=malloc(2*MAXLINELENGTH);
 	char *temp2=malloc(2*MAXLINELENGTH);
+	//Searches for built in commands in paths
 	while(path[i]!=NULL)
 	{
 		temp2=strdup(path[i]);
@@ -65,6 +66,11 @@ void searchCommand(char **command,char **path)
 			return;//success
 		}
 		i++;
+	}
+	//searches for 	exit ,cd ,pwd and path
+	if(strcmp(&command[0][0],"exit")==0||strcmp(&command[0][0],"cd")==0||strcmp(&command[0][0],"pwd")==0||strcmp(&command[0][0],"path")==0)
+	{
+		return;
 	}
 	callErrorFn();
 }
@@ -84,6 +90,7 @@ void executeCommand(char **command, char **path)
 		temp=strcat(temp2,"/");
 		temp=strcat(temp,&command[0][0]);
 		struct stat *buf=malloc(sizeof(struct stat));
+		//Searches for built in commands in paths
 		if(stat(temp,buf)==0)
 		{
 			int rc=fork();
@@ -98,7 +105,7 @@ void executeCommand(char **command, char **path)
 			}
 			else
 			{
-					callErrorFn();				
+				callErrorFn();	//if fork fails			
 			}
 			return;//success
 		}
@@ -123,13 +130,15 @@ int main(int argc ,char *argv[])
 	path[1]=strdup("/usr/bin");
 	
 	//loop starts
-	printf("whoosh> ");
-	fgets(input,MAXLINELENGTH,stdin);
-	parse(input,command);
-	searchCommand(command,path);
-	executeCommand(command,path);
+	for(;;)
+	{
+		printf("whoosh> ");
+		fgets(input,MAXLINELENGTH,stdin);
+		parse(input,command);
+		searchCommand(command,path);
+		executeCommand(command,path);
+	}
 	return 0;
-
 }
 
 
