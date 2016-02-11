@@ -1,7 +1,10 @@
+Question 
+1 number of parameter check only for built in commands and not the other commands right ?
+
 1. path
 2. redirection
 5 exit only in case of incorrect number of arguments
-6 tokenizer when extra space at end then giving errors
+
 
 Notes P2
 1 when no recognizable commane - print the error
