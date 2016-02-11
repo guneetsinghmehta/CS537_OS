@@ -124,7 +124,7 @@ void executeCommand(char **command, char **path)
 	//incomplete
 			printf("**my implementation**\n");
 		int i=1;
-		path=malloc(MAXLINELENGTH);
+		path=calloc(100,MAXLINELENGTH);
 		while(command[i]!=NULL)
 		{
 			path[i-1]=strdup(command[i]);
