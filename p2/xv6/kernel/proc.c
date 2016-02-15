@@ -257,10 +257,9 @@ scheduler(void)
 {
   struct proc *p;
 
-  for(;;){
+  for(;;){ //forever loop
     // Enable interrupts on this processor.
     sti();
-
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
@@ -273,6 +272,8 @@ scheduler(void)
       proc = p;
       switchuvm(p);
       p->state = RUNNING;
+
+      //run the program, store 1st arg, load 2nd arg
       swtch(&cpu->scheduler, proc->context);
       switchkvm();
 
