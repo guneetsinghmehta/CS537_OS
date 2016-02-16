@@ -67,7 +67,9 @@ found:
   p->context = (struct context*)sp;
   memset(p->context, 0, sizeof *p->context);
   p->context->eip = (uint)forkret;
-
+  
+  //amohanty
+  p->pri = 1;
   return p;
 }
 
@@ -78,7 +80,7 @@ userinit(void)
   struct proc *p;
   extern char _binary_initcode_start[], _binary_initcode_size[];
   
-  p = allocproc();
+  p = allocproc(); //this is the central point, priority will be inited to 0
   acquire(&ptable.lock);
   initproc = p;
   if((p->pgdir = setupkvm()) == 0)
@@ -252,6 +254,29 @@ wait(void)
 //  - swtch to start running that process
 //  - eventually that process transfers control
 //      via swtch back to the scheduler.
+
+//this method returns 1 if there is 
+//a p with priority 2 else rets 0
+int priority_checker()
+{
+    
+  struct proc *p;
+
+    acquire(&ptable.lock);
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+    {
+        if(p->pri==2i){
+            release(&ptable.lock);
+            return 1;
+        }
+    }
+    release(&ptable.lock);
+
+    return 0; //no process with pri == 2
+}
+  
+  
+  
 void
 scheduler(void)
 {
@@ -260,11 +285,20 @@ scheduler(void)
   for(;;){ //forever loop
     // Enable interrupts on this processor.
     sti();
-    // Loop over process table looking for process to run.
+    
     acquire(&ptable.lock);
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if(p->state != RUNNABLE)
-        continue;
+      if(p->state == RUNNABLE){
+          if(p->pri==2)
+            break;
+          else if(p->pri==1)
+          {
+              if(!priority_checker()) //no p with pri==2
+                  break;
+          }
+      }
+    }
+
 
       // Switch to chosen process.  It is the process's job
       // to release ptable.lock and then reacquire it
