@@ -28,7 +28,7 @@ empty input file
 
 **********************************************************************
 Running fastsort
-/tmp/tmpDC9QGJ/p/fastsort /afs/cs.wisc.edu/p/course/cs537-remzi/ta/tests/1a/input/empty
+/tmp/tmpxs1suu/p/fastsort /afs/cs.wisc.edu/p/course/cs537-remzi/ta/tests/1a/input/empty
 Checking output
 
 
@@ -44,7 +44,7 @@ a single record
 
 **********************************************************************
 Running fastsort
-/tmp/tmpDC9QGJ/p/fastsort /afs/cs.wisc.edu/p/course/cs537-remzi/ta/tests/1a/input/one
+/tmp/tmpxs1suu/p/fastsort /afs/cs.wisc.edu/p/course/cs537-remzi/ta/tests/1a/input/one
 Checking output
 
 
@@ -60,7 +60,7 @@ five records
 
 **********************************************************************
 Running fastsort
-/tmp/tmpDC9QGJ/p/fastsort /afs/cs.wisc.edu/p/course/cs537-remzi/ta/tests/1a/input/five1
+/tmp/tmpxs1suu/p/fastsort /afs/cs.wisc.edu/p/course/cs537-remzi/ta/tests/1a/input/five1
 Checking output
 
 
@@ -76,7 +76,7 @@ five records
 
 **********************************************************************
 Running fastsort
-/tmp/tmpDC9QGJ/p/fastsort -2 /afs/cs.wisc.edu/p/course/cs537-remzi/ta/tests/1a/input/five2
+/tmp/tmpxs1suu/p/fastsort -2 /afs/cs.wisc.edu/p/course/cs537-remzi/ta/tests/1a/input/five2
 Checking output
 
 
@@ -92,7 +92,7 @@ missing keys in some lines
 
 **********************************************************************
 Running fastsort
-/tmp/tmpDC9QGJ/p/fastsort -5 /afs/cs.wisc.edu/p/course/cs537-remzi/ta/tests/1a/input/missing_keys
+/tmp/tmpxs1suu/p/fastsort -5 /afs/cs.wisc.edu/p/course/cs537-remzi/ta/tests/1a/input/missing_keys
 Checking output
 
 
@@ -107,7 +107,7 @@ Test arg
 Bad arguments
 
 **********************************************************************
-/tmp/tmpDC9QGJ/p/fastsort
+/tmp/tmpxs1suu/p/fastsort
 
 
 test arg PASSED (10 of 10)
@@ -121,7 +121,7 @@ Test arg2
 Bad arguments
 
 **********************************************************************
-/tmp/tmpDC9QGJ/p/fastsort a b c d
+/tmp/tmpxs1suu/p/fastsort a b c d
 
 
 test arg2 PASSED (10 of 10)
@@ -135,7 +135,7 @@ Test arg3
 Invalid key value
 
 **********************************************************************
-/tmp/tmpDC9QGJ/p/fastsort -i input/empty
+/tmp/tmpxs1suu/p/fastsort -i input/empty
 
 
 test arg3 PASSED (10 of 10)
@@ -149,7 +149,7 @@ Test badin
 Bad input file
 
 **********************************************************************
-/tmp/tmpDC9QGJ/p/fastsort /invalid/path/v3Bkk2
+/tmp/tmpxs1suu/p/fastsort /invalid/path/wYBXZN
 
 
 test badin PASSED (10 of 10)
@@ -163,7 +163,7 @@ Test toolong
 some line has more than 128 characters
 
 **********************************************************************
-/tmp/tmpDC9QGJ/p/fastsort /afs/cs.wisc.edu/p/course/cs537-remzi/ta/tests/1a/input/toolong
+/tmp/tmpxs1suu/p/fastsort /afs/cs.wisc.edu/p/course/cs537-remzi/ta/tests/1a/input/toolong
 
 
 test toolong PASSED (10 of 10)

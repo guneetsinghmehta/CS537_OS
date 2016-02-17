@@ -5,6 +5,7 @@
 #include "x86.h"
 #include "proc.h"
 #include "spinlock.h"
+#include "pstat.h"
 
 struct {
   struct spinlock lock;
@@ -247,16 +248,51 @@ wait(void)
   }
 }
 
-// Per-CPU process scheduler.
-// Each CPU calls scheduler() after setting itself up.
-// Scheduler never returns.  It loops, doing:
-//  - choose a process to run
-//  - swtch to start running that process
-//  - eventually that process transfers control
-//      via swtch back to the scheduler.
 
-//this method returns 1 if there is 
-//a p with priority 2 else rets 0
+
+
+
+//amohanty
+//
+int setpri(int x)
+{
+    if(x!=1 || x!=2)
+    {
+        return 1;
+    }
+//struct proc *p;
+acquire(&ptable.lock);
+proc->pri=x;
+release(&ptable.lock);
+
+return 0;
+}
+
+int getpinfo(struct pstat* p)
+{
+struct proc *iter;
+
+    //if error in arguments
+    //return 0
+    //
+int index=0;
+
+for(iter=ptable.proc;iter< &ptable.proc[NPROC];iter++)
+{   
+    if(iter->state==UNUSED)
+        p->inuse[index]=0;
+    else p->inuse[index]=1;
+    p->pid[index]=iter->pid;
+    p->hticks[index]=iter->hticks;
+    p->lticks[index]=iter->lticks;
+    index++;
+}
+
+return 0;
+
+}
+
+
 int priority_checker()
 {
     
@@ -265,7 +301,7 @@ int priority_checker()
     acquire(&ptable.lock);
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
     {
-        if(p->pri==2i){
+        if(p->pri==2){
             release(&ptable.lock);
             return 1;
         }
@@ -275,7 +311,7 @@ int priority_checker()
     return 0; //no process with pri == 2
 }
   
-  
+//struct pstat *ps;
   
 void
 scheduler(void)
@@ -288,28 +324,32 @@ scheduler(void)
     
     acquire(&ptable.lock);
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if(p->state == RUNNABLE){
+      if(p->state!=RUNNABLE) continue;
           if(p->pri==2)
             break;
           else if(p->pri==1)
-          {
+          {     //check if it might break before returning
               if(!priority_checker()) //no p with pri==2
                   break;
           }
       }
-    }
-
-
-      // Switch to chosen process.  It is the process's job
-      // to release ptable.lock and then reacquire it
-      // before jumping back to us.
+      int tick_start=ticks;
       proc = p;
       switchuvm(p);
       p->state = RUNNING;
+      
+//      ps->pid=proc->pid;//assigns pid for pstat entry
 
-      //run the program, store 1st arg, load 2nd arg
       swtch(&cpu->scheduler, proc->context);
+     //updating pstat.h stuff
       switchkvm();
+      //int end_cpu=clocks(); //end timers
+      int tick_end=ticks;
+//      int delta=end_cpu-begin_cpu;
+      //check whats guarantee priority remains same
+      int ticks_delta = tick_end-tick_start;
+      if(proc->pri==2)proc->hticks+=ticks_delta;
+      else proc->lticks+=ticks_delta;
 
       // Process is done running for now.
       // It should have changed its p->state before coming back.
@@ -317,7 +357,6 @@ scheduler(void)
     }
     release(&ptable.lock);
 
-  }
 }
 
 // Enter scheduler.  Must hold only ptable.lock

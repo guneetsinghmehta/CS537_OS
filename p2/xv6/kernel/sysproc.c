@@ -5,7 +5,7 @@
 #include "mmu.h"
 #include "proc.h"
 #include "sysfunc.h"
-
+#include "pstat.h"
 int
 sys_fork(void)
 {
@@ -33,6 +33,26 @@ sys_kill(void)
   if(argint(0, &pid) < 0)
     return -1;
   return kill(pid);
+}
+
+
+//amohanty
+int sys_setpri(void)
+{
+    int priority;
+    //first param pushed onto 
+    argint(0,&priority);
+    return setpri(priority);
+}
+
+int sys_getpinfo(void)
+{
+struct pstat *p;
+
+//check arguments validity how?
+argptr(0,p);
+//check pointers
+return getpinfo(p);
 }
 
 int
