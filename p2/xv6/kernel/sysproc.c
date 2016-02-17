@@ -50,7 +50,7 @@ int sys_getpinfo(void)
 struct pstat *p;
 
 //check arguments validity how?
-argptr(0,p);
+argptr(0,&p,16*NPROC);
 //check pointers
 return getpinfo(p);
 }

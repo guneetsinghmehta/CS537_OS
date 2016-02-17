@@ -280,11 +280,21 @@ int index=0;
 for(iter=ptable.proc;iter< &ptable.proc[NPROC];iter++)
 {   
     if(iter->state==UNUSED)
+    {
         p->inuse[index]=0;
-    else p->inuse[index]=1;
-    p->pid[index]=iter->pid;
-    p->hticks[index]=iter->hticks;
-    p->lticks[index]=iter->lticks;
+
+        //should these be 0 indeed?
+        p->pid[index]=   0;
+        p->hticks[index]=0;
+        p->lticks[index]=0;
+    }
+    else 
+    {
+        p->inuse[index]=1;
+        p->pid[index]=iter->pid;
+        p->hticks[index]=iter->hticks;
+        p->lticks[index]=iter->lticks;
+    }
     index++;
 }
 
@@ -298,7 +308,7 @@ int priority_checker()
     
   struct proc *p;
 
-    acquire(&ptable.lock);
+    //acquire(&ptable.lock);
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
     {
         if(p->pri==2){
@@ -306,7 +316,7 @@ int priority_checker()
             return 1;
         }
     }
-    release(&ptable.lock);
+    //release(&ptable.lock);
 
     return 0; //no process with pri == 2
 }
@@ -353,9 +363,9 @@ scheduler(void)
 
       // Process is done running for now.
       // It should have changed its p->state before coming back.
-      proc = 0;
-    }
+    proc = 0;
     release(&ptable.lock);
+    }
 
 }
 
