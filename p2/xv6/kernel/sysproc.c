@@ -41,7 +41,10 @@ int sys_setpri(void)
 {
     int priority;
     //first param pushed onto 
-    argint(0,&priority);
+    //check
+    if(argint(0,&priority)<0)
+        return -1;
+//    cprintf("ckjcdblkadnc;kacn\n");
     return setpri(priority);
 }
 
@@ -50,7 +53,8 @@ int sys_getpinfo(void)
 struct pstat *p;
 
 //check arguments validity how?
-argptr(0,&p,16*NPROC);
+if(argptr(0,&p,4)<0)
+    return -1;
 //check pointers
 return getpinfo(p);
 }

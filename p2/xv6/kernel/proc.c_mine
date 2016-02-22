@@ -318,7 +318,7 @@ int priority_checker()
     //acquire(&ptable.lock);
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
     {
-        if(p->pri==2 && p->state==RUNNABLE){
+        if(p->pri==2){
             //release(&ptable.lock);
             return 1; //process with pri ==2
         }
@@ -356,14 +356,21 @@ void scheduler(void)
       p->state = RUNNING;
       swtch(&cpu->scheduler, proc->context);
       switchkvm();
+    }
       int tick_end=ticks;
       int ticks_delta = tick_end-tick_start;
       if(proc->pri==2){
           proc->hticks+=ticks_delta;
       }
+      
       else proc->lticks+=ticks_delta;
+    
+      cprintf("Proc pid = %d\n",proc->pid);
+      if(proc->pid==NPROC)
           proc=0;
-    }
+      else
+      proc++;
+      cprintf("Proc pid after incr = %d\n",proc->pid);
     release(&ptable.lock);
   }
 }
@@ -478,7 +485,7 @@ kill(int pid)
   acquire(&ptable.lock);
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
     if(p->pid == pid){
-      //p-pri = 1; //resetting p's priority //amohanty
+      p->pri = 1; //resetting p's priority //amohanty
       p->killed = 1;
       // Wake process from sleep if necessary.
       if(p->state == SLEEPING)
