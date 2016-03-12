@@ -22,7 +22,7 @@ all: xv6.img fs.img
 # http://gcc.gnu.org/onlinedocs/gcc-4.4.6/gcc/Invoking-GCC.html
 CC = gcc
 # enable extra warnings
-CFLAGS += -Wall
+# CFLAGS += -Wall
 # treat warnings as errors
 # CFLAGS += -Werror
 # produce debugging information for use by gdb
@@ -78,7 +78,7 @@ QEMUGDB := $(shell if $(QEMU) -help | grep -q '^-gdb'; \
 	then echo "-gdb tcp::$(GDBPORT)"; \
 	else echo "-s -p $(GDBPORT)"; fi)
 
-# number of CPUs to emulate in QEMU
+# number of CPUs to emulate in QEMU, change to 1 for Project 2
 ifndef CPUS
 CPUS := 1
 endif

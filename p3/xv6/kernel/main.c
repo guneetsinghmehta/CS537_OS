@@ -62,6 +62,9 @@ mainc(void)
   cinit();
   sti();           // enable inturrupts
   userinit();      // first user process
+  
+  //amohanty
+  shmeminit();
   scheduler();     // start running processes
 }
 
