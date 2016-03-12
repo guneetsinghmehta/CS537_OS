@@ -1,0 +1,10 @@
+>added to allocproc in proc.c to init priority with default p=1 ::  p->pri =1
+
+>addded pri attribute to proc.h in kernel
+
+>modidifed proc.c with new logic for 2 level sched, look at release locks
+
+
+
+##add the 2 system calls
+

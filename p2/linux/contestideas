@@ -1,0 +1,7 @@
+include libraries in 1 file=>one line
+compact if else, see loop substitution
+make external function calls, to other files perhaps and add functionality there
+think about minimizing error calls
+first write a working shell and make a backup
+
+> include exiting in the error code printing
