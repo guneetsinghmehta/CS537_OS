@@ -1,9 +1,0 @@
-this
-is a
-new line
-so
-the number of lines
-in this
-text
-=
-9

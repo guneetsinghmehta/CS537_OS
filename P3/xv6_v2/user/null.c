@@ -1,0 +1,17 @@
+#include "types.h"
+#include "stat.h"
+#include "user.h"
+#include "fs.h"
+
+
+int
+main(int argc, char *argv[])
+{
+	int* p=(int*)malloc(sizeof(int));
+	printf(1,"main address=%p\n",&main);
+	int a=1;
+	printf(1,"stack address=%p\n",&a);
+	printf(1,"heap address=%p\n",p);
+//	printf(1,"hello[%x] \n",*p);
+  	exit();
+}

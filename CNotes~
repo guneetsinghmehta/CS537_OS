@@ -1,0 +1,173 @@
+Every char array ends with a zero character
+
+strlen , sizeof
+
+all pointers in a 64 bit machine is of length 8 bytes
+
+sprintf prints to a string
+sprintf(msg,"5+3+%d",5+3);
+
+snprintf - prints n characters
+snprintf- snprintf(msg,sizeof(msg),"5+3+%d",5+3);
+
+strdup - allocates space in the heap and returns the copied string 
+
+free arrays after using it. free(array name)
+
+memcopy - copies the memory using pointer - void *memcpy(void *dest, const void *src, size_t n);
+
+assert - what happens when assert fails ?
+
+ususally - return 0 on success and 1 on failure
+
+to print a pointer use %p
+
+//////////////Structs - structures////////////////////
+typedef name nickname
+struct coord
+{
+	int x;
+	int y;
+};
+typedef struct coord coord;
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<assert.h>
+typedef struct coord
+{
+	int x;
+	int y;
+}coord_t;
+
+
+void print_coord(coord_t c)
+{
+	printf("x=%d y=%d",c.x,c.y);
+}
+int main (int argc , char *argv[])
+{
+	coord_t c;
+	c.x=1;c.y=2;
+	print_coord(c);
+	return 0;
+}
+
+///////////////pointer dereferencing////////////
+Reference means passing the address 
+Dereference means taking out the value at a particular address.
+Example Program --
+typedef struct coord
+{
+	int x;
+	int y;
+}coord_t;
+
+
+void print_coord(coord_t *c)
+{
+	printf("x=%d y=%d",(*c).x,c->y);
+}
+int main (int argc , char *argv[])
+{
+	coord_t c;
+	c.x=1;c.y=2;
+	print_coord(&c);
+	return 0;
+}
+
+//////////////Function pointers////////////////
+Usefull because it is not Object oriented. We have a pointer
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<assert.h>
+typedef struct coord
+{
+	int x;
+	int y;
+}coord_t;
+
+int add( coord_t  *c)
+{
+	return(c->x+c->y);
+}
+
+int mult( coord_t  *c)
+{
+	return(c->x*c->y);
+}
+
+int fn_op(coord_t *c, int (*fn)(coord_t *))
+{
+	return fn(c);
+}
+
+void print_coord(coord_t *c)
+{
+	printf("x=%d y=%d\n",c->x,c->y);
+}
+
+int main (int argc , char *argv[])
+{
+	coord_t c;
+	c.x=1;c.y=2;
+	print_coord(&c);
+	printf("add=%d\n",fn_op(&c,add));
+		printf("mult=%d\n",fn_op(&c,mult));
+		
+		
+////////////Preprocessor and MACROS///////////////////
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<assert.h>
+
+#define MB (0+1048576)
+
+int mb_to_bytes(int mb)
+{
+	return mb* MB;
+}
+
+int main (int argc , char *argv[])
+{
+	printf("1 Mb is %d bytes \n",mb_to_bytes(1));
+	printf("1 Mb is %d bytes \n",mb_to_bytes(2));
+	return 0;
+}
+	
+	
+////////MUltiple files////////////////////
+use to simplify the project
+
+gcc -Wall -c main.c   - this makes main.o file
+gcc -Wall -c helper.c	- this makes helper.o file
+gcc -Wall -o main main.o helper.o
+
+
+///////Makefile///////////
+main.o : main.c
+	gcc -Wall -c main.c
+
+helper.o : helper.c
+	gcc -Wall -c helper.c
+
+
+main : helper.o main.o
+	gcc -Wall -o main main.o helper.o
+
+clean :
+	rm *.o main
+	
+# fo make main
+#gcc -Wall -c helper.c
+
+#gcc -Wall -o main main.o helper.o
+
+Static in C is private variable
+Extern - to share variables accross files
+
+//// It is possible of a common file to include other header files/////
+

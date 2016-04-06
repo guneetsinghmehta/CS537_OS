@@ -1,0 +1,46 @@
+Specs for P3 - XV6
+1. Adding  null pointer-
+a. Zeroth page on the VM should be an invalid page (Zeroth page in xv6 is a valid pointer in xv6)
+b. Set the zeroth page as invalid 
+
+2 . structure of memory -
+code - starts at VPN 0
+stack -  page
+heap - grows below
+
+3. exec creates a new process - new Address space - n
+
+4. loop in exec.c - change the sz and change in allocuvm
+
+5. change in user/makefile.mk - change the USER_LDFLAGS -- section-start =and put the starting address there
+4096 in hex
+
+6. every thing else in the AS - like the memory out of code,stack and heap - will be invalid
+so if we do not load anything to the first page then the first page will be invalid
+
+kalloc - allocates physical memory 
+memset - set the memory to 0 - usage memset(mem,0,PGSIZE);
+mappages
+
+
+Part2 
+1.shmem_access(int page_number), which should make a shared page available to the process calling it. The page_number argument can range from 0 through 3, and allows for four different pages to be used in this manner.
+
+2. When a process calls shmem_access(0), the OS should map a physical page into the virtual address space of the caller, starting at the very high end of the address space. This means the last page in the memory available.
+The call then returns the virtual address of that page to the caller, so it can read/write it.
+
+3 No synchronisation thing here 
+Some things to think about:
+
+Failure cases: Bad argument to system call, address space already fully in use (large heap).
+How to handle fork(): Upon fork, must also make sure child process has access to shared page, and that reference counts are updated appropriately.
+How to track reference counts to each page so as to be able to implement shmem_count().
+
+One other call is needed: int shmem_count(int page_number). This call tells you, for a particular shared page, how many processes currently are sharing that page.
+
+Steps
+1. set up four pages
+2 set a structure that holds the values of the number of processes accessing them
+3 implement shmem_access-
+a. OS should find the highest page available
+b. map it to the shared page

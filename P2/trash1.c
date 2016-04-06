@@ -1,14 +1,16 @@
 #include<stdio.h>
-#include<stdlib.h>
 #include<string.h>
-#include<assert.h>
-
-//#define MB (0+1048576)
-int mb_to_bytes(int );
-
-int main (int argc , char *argv[])
+#include <sys/types.h>
+#include <sys/stat.h>
+#include<unistd.h>
+int main()
 {
-	printf("1 Mb is %d bytes \n",mb_to_bytes(1));
-	printf("1 Mb is %d bytes \n",mb_to_bytes(2));
+	
+		char *temp="/bin//uname.out";
+		FILE *f1=fopen(temp,"w");
+		printf("%d",f1);		
+				char *temp2="/bin//uname.err";
+		FILE *f2=fopen(temp2,"w");
+		printf("%d",f2);	
 	return 0;
 }

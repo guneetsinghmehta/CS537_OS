@@ -1,0 +1,11 @@
+1 spawn a child for built in commands - to wait for process
+2 Done run cd pwd,path and exit
+3 Done run cd and path with a variable
+4 do not perform redirection for built in functions - cd , pwd exit and path
+5 exit program if incorrect number of arguments given
+6 use fopen and not open - mentioned
+
+7 fprintf(STDOUT
+fflush
+
+8 argc==1

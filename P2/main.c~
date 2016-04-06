@@ -1,0 +1,29 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<assert.h>
+#include "common.h"
+#include<unistd.h>
+
+int main (int argc , char *argv[])
+{
+	printf("Hello\n");
+	
+	int rc=fork();
+	if(rc==0)
+	{
+		printf("child :%d\n",(int)getpid());	
+	}
+	else if(rc>0)
+	{	
+				printf("parent:rc was %d\n",rc);
+	}
+	else
+	{
+		fprintf(stderr,"fail\n");
+	}
+	printf("rc =%d \n",rc);	
+		
+	printf("Goodbye\n");
+	return rc;
+}

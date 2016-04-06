@@ -1,0 +1,6 @@
+main.o main.c
+	gcc -Wall -c main.c
+
+#gcc -Wall -c helper.c
+
+#gcc -Wall -o main main.o helper.o

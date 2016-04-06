@@ -1,0 +1,39 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<assert.h>
+typedef struct coord
+{
+	int x;
+	int y;
+}coord_t;
+
+int add( coord_t  *c)
+{
+	return(c->x+c->y);
+}
+
+int mult( coord_t  *c)
+{
+	return(c->x*c->y);
+}
+
+int fn_op(coord_t *c, int (*fn)(coord_t *))
+{
+	return fn(c);
+}
+
+void print_coord(coord_t *c)
+{
+	printf("x=%d y=%d\n",c->x,c->y);
+}
+
+int main (int argc , char *argv[])
+{
+	coord_t c;
+	c.x=1;c.y=2;
+	print_coord(&c);
+	printf("add=%d\n",fn_op(&c,add));
+		printf("mult=%d\n",fn_op(&c,mult));
+	return 0;
+}

@@ -1,0 +1,42 @@
+1 Inputs
+a. one or two inputs 
+b. if one input then sorting on the basis of first word
+c. sort on the basis of input word
+d. format check - dash and followed by a number
+if not then - print to stderr - Error: Bad command line parameters and exit with return code 1.
+
+2 Hints
+a. fopen - to open a file
+b. fgets - reads each line 
+fclose -closes the file
+strcmp - to compare strings 
+qsort - library routine
+strtok - chops the lines into words - copy and then use on lines
+exit(1) - to give error and exit(0) - to exit cleanly
+malloc - to allocate memory
+fstat/ stat - to find out file length
+
+3. assumptions
+a. return code on success==0
+b. multiple spaces may separate words in lines
+c. max line length =128
+d. if a specific key does not exist on the line then use the last word
+e.empty line - use an empty string to do sorting
+
+4 Invalid files - if file is not open due to any readon-
+ Error: Cannot open file foo with no extra spaces (if the file was named foo ) and then exit with return code 1.
+
+5On any error code, you should print the error to the screen using fprintf() , and send the error message to stderr (standard error) and not stdout (standard output). This is accomplished in your C code as follows:
+
+fprintf(stderr, “whatever the error message is\n”);
+
+Steps
+1. Done Check the qrguments and do error checking
+2. open file and read the stats of the file Done
+ 
+3. allocate memory for lines Done
+4. allocate memory for words
+5. find qsort for strings - or assign indices for the words and bubble sort and move the indices accordingly
+6. malloc error handling
+
+

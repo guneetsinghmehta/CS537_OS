@@ -1,0 +1,4 @@
+1 tracking the priority of the process
+2 make the pstat table in the scheduler
+3 assign values to the scheduler during initialisation
+4 update the table everytime the process is called

@@ -1,0 +1,23 @@
+Specs for P3 - XV6
+1. Adding  null pointer-
+a. Zeroth page on the VM should be an invalid page (Zeroth page in xv6 is a valid pointer in xv6)
+b. Set the zeroth page as invalid 
+
+2 . structure of memory -
+code - starts at VPN 0
+stack -  page
+heap - grows below
+
+3. exec creates a new process - new Address space - n
+
+4. loop in exec.c - change the sz and change in allocuvm
+
+5. change in user/makefile.mk - change the USER_LDFLAGS -- section-start =and put the starting address there
+4096 in hex
+
+6. every thing else in the AS - like the memory out of code,stack and heap - will be invalid
+so if we do not load anything to the first page then the first page will be invalid
+
+kalloc - allocates physical memory 
+memset - set the memory to 0 - usage memset(mem,0,PGSIZE);
+mappages

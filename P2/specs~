@@ -1,0 +1,111 @@
+Question 
+1 number of parameter check only for built in commands and not the other commands right ?
+2 for ls > out1 out2 - should there be exit from shell of continue ?
+3 writing the output file in the same folder as the code or in tmp folder ?
+
+
+2. redirection
+a. only for shell commands
+b. not for built in commands
+c. outut should be to output.out
+d. error should be to output.err
+e. if files are present then overwrite
+f. if output is not specified - then error and not run the command
+g.
+
+5 exit only in case of incorrect number of arguments
+
+
+Notes P2
+1 when no recognizable commane - print the error
+2 set the path to /bin by default
+3 only one command per line
+
+Specs
+1 prompt - "whoosh> " . parse the input, execute the command and wait for the command to finish 
+2 commands - for each create a new process 
+a. exit - end of program - call exit(0)
+b. cd 
+c. pwd 
+d. path 
+
+3. cd
+a. cd without arguments - change working directory to path stored in $HOME environment - getenv("HOME") to get this value
+
+pwd
+call getcwd() - show the result
+
+path
+a.path /bin /usr/bin
+b. look for commands in htese folders
+c. if path = empty then no command can be run. But built in commands should be able to run
+
+
+4. Maximum length of input =128
+
+5. DO not support ~ Tilda
+
+6. if "ls -la /tmp > output" then nothing should be printed to the screen but should be printed to the specified file
+b. if file exists then simply overwrite it
+c. if no file is defined then print error message and do not run the program ls
+d. the following should not work 
+ls > out1 out2
+ls > out1 out2 out3
+ls > out1 > out2
+e. But not this (it is ok if this works, it just doesn't have to):
+    whoosh> ls>a
+
+7. Only error
+char error_message[30] = "An error has occurred\n";
+write(STDERR_FILENO, error_message, strlen(error_message));
+
+8 ou should consider the following situations as errors; in each case, your shell should print the error message to stderr and exit gracefully:
+
+    An incorrect number of command line arguments to your shell program.
+
+For the following situation, you should print the error message to stderr and continue processing:
+
+    A command does not exist or cannot be executed.
+    A very long command line (over 128 bytes).
+
+Your shell should also be able to handle the following scenarios below, which are not errors.
+
+    An empty command line.
+    Multiple white spaces on a command line.
+
+9 Parsing
+a. fgets
+b. FIle *pointer
+c. perror() - displays the problem
+d. strtok() - to parse the line separated by whitespaces
+
+10 executing commands
+a. fork
+b. execv
+c wait /waitpid
+d. Remember that if execv() is successful, it will not return; if it does return, there was an error (e.g., the command does not exist). The most challenging part is getting the arguments correctly specified. The first argument specifies the program that should be executed, with the full path specified; this is straight-forward. The second argument, char *argv[] matches those that the program sees in its function prototype:
+
+    int main(int argc, char *argv[]);
+
+Note that this argument is an array of strings, or an array of pointers to characters. For example, if you invoke a program with:
+
+    foo 205 535
+
+and assuming that you find foo in directory /bin , then argv[0] = "/bin/foo", argv[1] = "205" and argv[2] = "535".
+
+Important: the list of arguments must be terminated with a NULL pointer; in our example, this means argv[3] = NULL. We strongly recommend that you carefully check that you are constructing this array correctly!
+
+11 Built in commands
+a. getenv - used to go to home directory 
+b. chdir - is used to change the directory
+c. getcwd - returns curent directory
+
+12 Redirections
+a. close() - to close standard output and open() a file
+b. use open read and write system calls
+
+13 stat(). search for the command in all the specified paths like /bin and /usr/bin . Search for the file as stat("/bin/ls");
+a. if not present in any path then print the error message
+b. 
+Notes
+1. Note that the shell itself does not "implement" ls or really many other commands at all. All it does is find those executables in one of the directories specified by path and create a new process to run them. More on this below.

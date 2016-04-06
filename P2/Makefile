@@ -1,2 +1,2 @@
 all:
-	gcc -g -o t  whoosh.c -w 
+	gcc -g -o whoosh  whoosh.c -w 

@@ -1,0 +1,8 @@
+#include "types.h"
+#include "user.h"
+int
+main(int num)
+{
+	printf(1,"hello this is a program\n");
+   exit();
+}

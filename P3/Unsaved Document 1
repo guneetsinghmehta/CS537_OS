@@ -1,0 +1,60 @@
+Parsers and Dowloaders
+
+Parsers and downloaders send work to each other using queques
+
+Queque for parser to send to downloader- fized size
+
+Queque for downloader to send to parser - infinite size - allocate memory each time for a new entry
+
+Functions 
+1 
+
+Your library should use pthreads. You should take an especially close look at pthread_create, pthread_cond_wait, pthread_cond_signal, pthread_mutex_lock, and pthread_mutex_lock
+
+If you want to use strtok() for parsing, you should use strtok_r() instead. The strtok_r() is reentrant, or thread safe (i.e., multiple threads can call it at the same time and nothing breaks). The strtok() function is not thread safe.
+
+There are many cycles in the web graph (e.g., A links to B, and B links to A). You need to make sure not to end up in an infinite loop. One way to avoid this is to use a hash table or hash set to keep track of already-processed links. You may copy a hash function from online (e.g., fletcher32 )
+
+Concurrent hash structure - to store files that are already visited
+
+TO DOs
+1. queque of links (parsers to downloaders ) FIxed size
+2. queques of pages (downloaders to parsers). unbounded
+3 Hash set
+4. operate the queques and the hash set in a mutex
+5 Queque of linkes 
+parser waits when queque is full - Need a CV
+downloader waits then queque is empty - Need a CV
+mutex2 CVs and mutex
+
+Queuque of pages
+parser waits when it is empty - Need a CV
+downloader never waits 
+mutex
+1 CV and 1 mutex
+
+Hash set
+1 mutex
+
+waiting until done - or 
+1. when you add one page in links add 1 to a variable
+2. reduce that variable by one when page is done
+3. 1 CV and 1 mutex
+4. stop all workers - like a null or something very specific
+
+Format of links-
+link:a.txt
+
+File to make
+1. libcrawler.so
+
+Sub tasks
+0 thread creation examples
+1 Make two threads - print a and b with sleep
+2 Kill threads
+3 Mutex implementation
+4 cv implementation
+5 queque of links
+6 hash table
+7 queque of pages
+8 control function / complete crawler 
