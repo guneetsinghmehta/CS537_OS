@@ -12,8 +12,6 @@ void* thread_function(void* arg)
 {
 	struct thread_structure* p=(struct thread_structure*) arg;
 	printf("character =%c and count=%d\n",p->c,p->count);
-		printf("i=%d \n",i);
-//	int i;
 	for(i=0;i<p->count;i++)
 	{
 		//printf("%c\n",p->c);
@@ -29,7 +27,6 @@ int main(void)
 	struct thread_structure p,p2;
 	p.c='a';	p.count=1000;
 	p2.c='b';	p2.count=1000;
-	int i=1;
 	pthread_create(&thread1,NULL,thread_function,&p);
 	pthread_create(&thread2,NULL,thread_function,&p2);
 	usleep(1000);

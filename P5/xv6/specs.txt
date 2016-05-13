@@ -1,0 +1,2 @@
+1 include/fs.h - includes superblock,disk inode (struct dinode) directory entry format(struct dirent)
+2 tools/mkfs.c - how an empty file-system image is created

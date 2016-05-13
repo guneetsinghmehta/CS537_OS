@@ -1,5 +1,6 @@
 #include <pthread.h>
 #include <stdio.h>
+#include<malloc.h>
 /* This is our thread function.  It is like main(), but for a thread */
 
 struct thread_structure

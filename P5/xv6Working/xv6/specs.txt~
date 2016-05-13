@@ -1,0 +1,52 @@
+1.Done Check file present or not
+2. Read all inode dataBitmaps - dbMap,dbReference- through cycle 
+3.Done read all datablocks
+3b.Done Check root indoe -"ERROR: root directory does not exist.\
+4. cycle through the inodes - check for addresses -
+a. Done Check for validity - type<=4 -- ERROR: bad inode.
+b. Done Check all data blocks - if not less than 1024 then - ERROR: bad address in inode.
+c. Done Check all data blocks - increase the dbReference by one. 
+
+check data blocks if used but not in dbMap - ERROR: address used by inode but marked free in bitmap.
+
+after all inodes are cycled - check if dbReference equals to dbmap. if dbReference is 0 and dbMap is 1 then -RROR: bitmap marks block in use but it is not in use.
+
+Read all ibMap ,make copy in ibReference - 
+after all inodes are covered if ibMap is 1 and ibReference is 0 then ERROR: inode marked use but not found in a directory.
+If type is directory and reference is more than 1 then - ERROR: directory appears more than once in file system.
+If iReference is not equal to refences mentioned in the inodes then - ERROR: bad reference count for file.
+
+d. For directory check if . and .. are present or not - ERROR: directory not properly formatted.
+e. For Directory go to parent inode and check if reference to the current directory or not
+f. for directory check if inode is there but not in ibMap then  ERROR: inode referred to in directory but marked free.
+g. after all inodes are covered then if the iRef is not equal to 
+h. if reference becomes 2 - ERROR: address used more than once
+
+1. Read all the ibMap and dbMap
+2. cycle through all inodes -
+a. check addresses
+b. update dbReference 
+
+Done Each inode is either unallocated or one of the valid types (T_FILE, T_DIR, T_DEV). ERROR: bad inode.
+
+Done For in-use inodes, each address that is used by inode is valid (points to a valid datablock address within the image). Note: must check indirect blocks too, when they are in use. ERROR: bad address in inode.
+
+Root directory exists, and it is inode number 1. ERROR MESSAGE: root directory does not exist.
+
+Each directory contains . and .. entries. ERROR: directory not properly formatted.
+
+Each .. entry in directory refers to the proper parent inode, and parent inode points back to it. ERROR: parent directory mismatch.
+
+For in-use inodes, each address in use is also marked in use in the bitmap. ERROR: address used by inode but marked free in bitmap.
+
+For blocks marked in-use in bitmap, actually is in-use in an inode or indirect block somewhere. ERROR: bitmap marks block in use but it is not in use.
+
+For in-use inodes, any address in use is only used once. ERROR: address used more than once.
+
+For inodes marked used in inode table, must be referred to in at least one directory. ERROR: inode marked use but not found in a directory.
+
+For inode numbers referred to in a valid directory, actually marked in use in inode table. ERROR: inode referred to in directory but marked free.
+
+Reference counts (number of links) for regular files match the number of times file is referred to in directories (i.e., hard links work correctly). ERROR: bad reference count for file.
+
+No extra links allowed for directories (each directory only appears in one other directory). ERROR: directory appears more than once in file system.

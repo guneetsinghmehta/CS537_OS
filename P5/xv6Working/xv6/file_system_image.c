@@ -1,0 +1,159 @@
+#include<stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include<unistd.h>
+#include<assert.h>
+#include <sys/mman.h>
+
+
+#define BSIZE (512)
+#define NDIRECT 12
+#define NINDIRECT (BSIZE / sizeof(uint))
+#define MAXFILE (NDIRECT + NINDIRECT)
+#define IPB           (BSIZE / sizeof(struct dinode))
+
+// Block 0 is unused.
+// Block 1 is super block.
+// Inodes start at block 2.
+struct superblock {
+  uint size;         // Size of file system image (blocks)
+  uint nblocks;      // Number of data blocks
+  uint ninodes;      // Number of inodes.
+};
+
+struct dinode {
+  short type;           // File type
+  short major;          // Major device number (T_DEV only)
+  short minor;          // Minor device number (T_DEV only)
+  short nlink;          // Number of links to inode in file system
+  uint size;            // Size of file (bytes)
+  uint addrs[NDIRECT+1];   // Data block addresses
+};
+
+struct block512 {
+	char string[512];
+};
+
+void *img_ptr;
+struct superblock *sb;
+
+int checkInodes();
+int checkInodeAddresses(struct dinode*);
+int checkAddress(unsigned int);
+
+int main(int argc, char *argv[])
+{
+	int f1=open(argv[1],O_RDONLY);
+	if(f1<0)//checks if file present or not
+	{fprintf(stderr,"image not found");return 1; }
+	
+	int rc;
+	struct stat sbuf;
+	rc=fstat(f1,&sbuf);
+	assert(rc==0);
+	//use mmap
+	img_ptr=mmap(NULL, sbuf.st_size, PROT_READ, MAP_PRIVATE,f1, 0);
+	assert(img_ptr!=MAP_FAILED);
+	
+	sb=(struct superblock *)(img_ptr+BSIZE);	
+	printf("%d %d %d \n",sb->size, sb->nblocks,sb->ninodes);
+		
+	if(checkInodes(img_ptr,sb)==1){return 1;}
+	
+	return 0;
+}
+
+int checkInodes()
+{	
+	int i=0;
+	struct dinode *dip=(struct dinode*)(img_ptr+2*BSIZE);
+//	for(i=0;i<sb->ninodes;i++)
+	dip=dip+1;
+	for(i=0;i<sb->ninodes;i++)
+	{
+		//checkInodeAddresses(dip);
+		if(dip->type>=4)
+		{
+			{fprintf(stderr,"bad inode");return 1; }	
+		}
+		printf("%d\n",dip->type);
+		dip++;
+	}
+	printf("nblocks=%d\n",sb->ninodes);
+	return 0;
+}	
+
+int checkInodeAddresses(struct dinode *dip)
+{
+	printf("type=%hu major=%hu minor=%hu nlink=%hu size=%u\n",dip->type,dip->major,dip->minor,dip->nlink,dip->size); 
+	//Read direct addresses and print
+	int i=0;
+//	for (i=0;i<NDIRECT;i++)
+	for (i=0;i<1;i++)
+	{
+		//direct addresses
+		checkAddress(dip->addrs[i]);
+	}
+	int usedblocks=dip->size/BSIZE;
+	if(dip->size%BSIZE!=0)
+	{ usedblocks++;}
+	
+	if(dip->size>NDIRECT*BSIZE)
+	{
+		//check indirect addresses
+		/*
+		int *indirect=(int*)dip->addrs[NDIRECT];
+		printf("%p\n",indirect);
+		for(i=0;i<NDIRECT/4;i++)
+		{
+			printf("%p\n",indirect[i]);
+		}
+		*/
+	}
+	//Read indirect addresses and print 
+}
+
+int checkAddress(unsigned int kip)
+{
+//returns 0 for success and 1 for error
+	printf("%d\n",kip);
+	//find the block to read
+	int bitblockOffset = kip/(512*8) ;
+	int blockToBeRead =  2 +sb->ninodes / IPB + bitblockOffset+1;// zeroth block,superblock, first inode block =3 . ninodes/IPB- any additional blocks for inodes
+	printf("%d %d\n",blockToBeRead,bitblockOffset);
+	struct block512 *temp=(struct block512*)(img_ptr);//read 512 bytes
+	temp=temp+blockToBeRead-1;//move to the block
+	printf("%s\n",temp->string);
+	
+	//casting the address to int pointer
+	int *temp2=(int*)temp;
+	//moving the int by kip/8 positions
+	temp2=temp2+kip/8;
+	printf("temp2=%d \n",temp2);
+	//shifting the bits by places and anding with 1 to show whether valid or not
+	int temp3=(int)temp2>>(kip%8);
+	temp3=temp3&1;
+	printf("address= %d\n",temp3);
+	//read the block
+	
+	//read the bit in the block
+	
+	//return 1(fault if the bit is not 1) else return 0
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
